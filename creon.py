@@ -114,7 +114,7 @@ class Cy_chart:
                 low =self.objStockChart.GetDataValue(4, i)
                 close = self.objStockChart.GetDataValue(5, i)
                 volume = self.objStockChart.GetDataValue(6, i)
-                trading_value = self.objStockChart.GetDataValue(7, i)
+                trading_value = int(self.objStockChart.GetDataValue(7, i)/1000)
                 acu_sell = self.objStockChart.GetDataValue(8, i)
                 acu_buy = self.objStockChart.GetDataValue(9, i)
 
@@ -158,10 +158,10 @@ class Cy_chart:
         self.objStockChart.SetInputValue(4, request_num)  # 조회 개수
         self.objStockChart.SetInputValue(5,
                                          [0,        #일자
-                                          3,        #시가
-                                          4,        #고가
-                                          5,        #저가
-                                          6,        #종가
+                                          2,        #시가
+                                          3,        #고가
+                                          4,        #저가
+                                          5,        #종가
                                           8,        #거래량
                                           9,        #거래대금
                                           10,       #매도
@@ -191,19 +191,31 @@ class Cy_chart:
                 temp = []
 
                 for j in range(15):
-                    temp.append(self.objStockChart.GetDataValue(j, i))
+                    #수정주가는 배열 맨 마지막에 붙인다.
+                    if j == 11:
+                        revision_rate = self.objStockChart.GetDataValue(j, i)
+
+                    #거래대금 시가총액 억단위로 바꾼다.
+                    elif j==6 or j==9:
+                        temp.append(int(self.objStockChart.GetDataValue(j,i)/100000000))
+                    else:
+                        temp.append(self.objStockChart.GetDataValue(j, i))
+
+                temp.append(revision_rate)
                 received_data.append(temp)
 
             received_min_date = min(received_data)[0]
+
 
             # BREAK OPTIONS
             if self.objStockChart.Continue == 0:
                 break
 
-            elif (db_recent_date is not None) and (received_min_date < str(db_recent_date)):
+            elif (str(received_min_date) < str(db_recent_date)):
                 break
 
         return received_data
+
 
 def remove_accumulation(data):
     '''
@@ -230,36 +242,10 @@ def remove_accumulation(data):
     else:
         return data[:-1]
 
-def get_recent_date_time(curs, code, db_type):
-
-    # 현재 DB의 가장 최근 일자
-    sql = 'select max(`일자`) from `' + code + '`'
-    curs.execute(sql)
-    db_recent_date = curs.fetchall()[0][0]
-
-    if db_recent_date is None:
-        return 0
-
-    if db_type =='minute':
-        db_recent_date = db_recent_date.strftime('%Y%m%d%H%M%S')
-
-    elif db_type =='day':
-        db_recent_date = db_recent_date.stftime('%Y%m%d')
-
-    return db_recent_date
-'''
-def calculate_date_time():
-
-'''
-
-
-
 if __name__ == '__main__':
     chart = Cy_chart()
 
-    data = chart.request_minute('005930', ord('m'), length = 1, request_num =500)
-
-
+    data = chart.request_minute(code = 'A005930', length = 5, request_num = 500, db_recent_date = 0)
     print(data)
 
-
+    print(len(data))
