@@ -4,12 +4,12 @@
 
 DB로 MYSQL을 사용한다.
 생성해야 하는 DB목록.
-stockdb_day
-stockdb_min_1
-stockdb_min_3
-stockdb_min_5
-stockdb_min_10
-stockdb_min_15
+stockdb_day,
+,stockdb_min_1
+,stockdb_min_3
+,stockdb_min_5
+,stockdb_min_10
+,stockdb_min_15
 
 대신증권 api이용 등록해야 함.
 대신증권 cyboos plus 실행된 상태에서 db_updater 실행시킨다.
