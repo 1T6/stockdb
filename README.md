@@ -2,8 +2,8 @@
 
 -------prerequisite--------
 
-DB로 MYSQL을 사용한다.
-생성해야 하는 DB목록.
+DB로 MYSQL을 사용한다.---
+생성해야 하는 DB목록.---
 stockdb_day,
 ,stockdb_min_1
 ,stockdb_min_3
