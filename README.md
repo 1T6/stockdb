@@ -7,7 +7,7 @@ DB로 MYSQL을 사용한다. <br>
 stockdb_day, stockdb_min_1, stockdb_min_3, stockdb_min_5, stockdb_min_10,stockdb_min_15
 
 대신증권 api이용 등록해야 함.<br>
-대신증권 cyboos plus 실행된 상태에서 db_updater 실행시킨다.<br>
+대신증권 cybos plus 실행된 상태에서 db_updater 실행시킨다.<br>
 파이썬버전3.7.4 32bit <br>
 
 -------------------------------------------------
